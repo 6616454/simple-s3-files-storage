@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from src.db.repositories.holder import HolderRepository
 from src.di.db import uow_provider
 from src.di.user import get_user_service, provide_current_user
-from src.dto.user import Token, CreateUser, UserDTO
+from src.schemas.user import Token, CreateUser, UserDTO
 from src.services.user import UserService
 
 router = APIRouter(

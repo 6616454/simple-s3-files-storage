@@ -14,7 +14,7 @@ from starlette import status
 
 from src.core.config import Settings
 from src.db.repositories.holder import HolderRepository
-from src.dto.user import UserDTO, Token, CreateUser
+from src.schemas.user import UserDTO, Token, CreateUser
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl='/auth/sign-in')
 

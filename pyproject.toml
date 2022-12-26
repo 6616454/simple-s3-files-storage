@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "project-4"
+name = "project-5"
 version = "0.1.0"
 description = ""
 authors = ["hhssome <artempavel-terehove@mail.ru>"]
@@ -7,7 +7,7 @@ readme = "README.md"
 packages = []
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 sqlalchemy2-stubs = "^0.0.2a29"
 sqlalchemy = "^1.4.44"
 fastapi = "^0.88.0"

@@ -2,10 +2,9 @@ import uvicorn
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
-from sqlalchemy.orm import sessionmaker
 
 from src.api import setup_routes
-from src.core.config import get_settings, Settings
+from src.core.config import get_settings
 from src.core.logging import setup_logging
 from src.db.models.base import create_pool
 from src.di import setup_dependency_injection

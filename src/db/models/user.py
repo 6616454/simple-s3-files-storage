@@ -1,8 +1,7 @@
 from sqlalchemy import Column, BigInteger, String
-from sqlalchemy.orm import relationship
 
 from src.db.models.base import Base
-from src.dto.user import UserDTO
+from src.schemas.user import UserDTO
 
 
 class User(Base):
@@ -11,8 +10,6 @@ class User(Base):
     id = Column(BigInteger, primary_key=True)
     username = Column(String(32), unique=True, nullable=False)
     password_hash = Column(String, nullable=False)
-
-    urls = relationship('Url')
 
     def to_user_schema(self) -> UserDTO:
         return UserDTO(
