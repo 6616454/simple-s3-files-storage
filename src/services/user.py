@@ -1,6 +1,5 @@
 import datetime
 import logging
-from typing import Optional
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -12,7 +11,6 @@ from passlib.handlers.bcrypt import bcrypt
 from sqlalchemy.exc import IntegrityError
 from starlette import status
 
-from src.core.config import Settings
 from src.db.repositories.holder import HolderRepository
 from src.schemas.user import UserDTO, Token, CreateUser
 
@@ -33,9 +31,13 @@ class UserService:
 
     def __init__(
             self,
-            settings: Optional[Settings] = None
+            jwt_expiration,
+            jwt_secret: str,
+            jwt_algorithm: str
     ):
-        self.settings: Settings = settings
+        self.jwt_expiration = jwt_expiration
+        self.jwt_secret = jwt_secret
+        self.jwt_algorithm = jwt_algorithm
 
     async def create_token(self, user: UserDTO) -> Token:
 
@@ -44,14 +46,14 @@ class UserService:
         payload = {
             'iat': now,
             'nbf': now,
-            'exp': now + datetime.timedelta(seconds=self.settings.jwt_expiration),
+            'exp': now + datetime.timedelta(seconds=self.jwt_expiration),
             'sub': str(user.id),
             'user': user.dict(),
         }
         token = jwt.encode(
             payload,
-            self.settings.jwt_secret,
-            algorithm=self.settings.jwt_algorithm
+            self.jwt_secret,
+            algorithm=self.jwt_algorithm
         )
 
         return Token(access_token=token)
@@ -60,8 +62,8 @@ class UserService:
         try:
             payload = jwt.decode(
                 token,
-                self.settings.jwt_secret,
-                algorithms=[self.settings.jwt_algorithm]
+                self.jwt_secret,
+                algorithms=[self.jwt_algorithm]
             )
         except JWTError:
             logger.warning('User use invalid token %s', token)

@@ -6,7 +6,7 @@ from fastapi.responses import ORJSONResponse
 from src.api import setup_routes
 from src.core.config import get_settings
 from src.core.logging import setup_logging
-from src.db.models.base import create_pool
+from src.db.models.base import create_pool, create_redis
 from src.di import setup_dependency_injection
 from src.middlewares import setup_middlewares
 
@@ -21,7 +21,12 @@ def build_app() -> FastAPI:
     )
 
     setup_middlewares(app, settings)
-    setup_dependency_injection(app, pool, settings)
+    setup_dependency_injection(
+        app=app,
+        pool=pool,
+        redis=create_redis(settings.redis_host, settings.redis_port, settings.redis_db),
+        settings=settings
+    )
     setup_routes(app.router)
     setup_logging()
 
