@@ -1,2 +1,5 @@
 DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/postgres
 JWT_SECRET=aasjkldfasdlkfjsalkdfjaskldfjasldfk
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
