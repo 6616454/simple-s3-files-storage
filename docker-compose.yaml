@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14.5
+    restart: always
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: async-python-sprint-4
+    container_name: fastapi-app
+    network_mode: host
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    environment:
+      WAIT_HOSTS: localhost:5432
