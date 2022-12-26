@@ -9,7 +9,6 @@ packages = []
 [tool.poetry.dependencies]
 python = "^3.10"
 sqlalchemy2-stubs = "^0.0.2a29"
-sqlalchemy = "^1.4.44"
 fastapi = "^0.88.0"
 pydantic = "^1.10.2"
 python-jose = "^3.3.0"
@@ -23,7 +22,6 @@ passlib = "^1.7.4"
 python-multipart = "^0.0.5"
 orjson = "^3.8.3"
 httpx = "^0.23.1"
-redis = "^4.4.0"
 
 [build-system]
 requires = ["poetry-core"]
