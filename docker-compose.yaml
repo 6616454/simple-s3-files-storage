@@ -18,6 +18,17 @@ services:
       - redis_data:/data
     ports:
       - "6379:6379"
+  s3:
+    image: quay.io/minio/minio
+    env_file:
+      - ./.env
+    volumes:
+      - /minio/data:/data
+    network_mode: host
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    command: server --console-address ":9090" /data
 
   backend:
     build: .
@@ -28,6 +39,8 @@ services:
     depends_on:
       - db
       - cache
+      - s3
 
 volumes:
   redis_data:
+  minio_data:

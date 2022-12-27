@@ -4,3 +4,6 @@ REDIS_HOST=localhost
 POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
+S3_HOST=http://localhost:9000
+MINIO_ROOT_USER=hhssome
+MINIO_ROOT_PASSWORD=6616454

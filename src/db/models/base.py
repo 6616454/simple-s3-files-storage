@@ -1,5 +1,7 @@
 import logging
 
+import aioboto3
+from aiobotocore.config import AioConfig
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 from redis.asyncio import Redis
@@ -16,6 +18,11 @@ def create_pool(database_url: str, echo_mode: bool) -> sessionmaker:
     return pool
 
 
-def create_redis(redis_host: str, redis_port: int, redis_db: int):
+def create_redis(redis_host: str, redis_port: int, redis_db: int) -> Redis:
     logger.info('Creating Redis...')
     return Redis(host=redis_host, port=redis_port, db=redis_db)
+
+
+def create_s3():
+    session = aioboto3.Session()
+    return session

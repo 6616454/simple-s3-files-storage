@@ -11,9 +11,13 @@ class Settings(BaseSettings):
     redis_port: int = 6379
     redis_db: int = 1
 
+    s3_host: str
+    minio_root_user: str
+    minio_root_password: str
+
     jwt_secret: str
     jwt_algorithm: str = 'HS256'
-    jwt_expiration: int = 3600  # Жизнь токена - часv
+    jwt_expiration: int = 3600  # Жизнь токена - час
 
     class Config:
         env_file = '.env'
