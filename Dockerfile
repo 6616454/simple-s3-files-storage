@@ -1,6 +1,4 @@
-FROM python:3.11
-
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+FROM python:3.10.6
 
 
 WORKDIR /app
@@ -13,10 +11,8 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-RUN chmod +x /wait
+
+COPY . /app
 
 
-COPY async-python-sprint-4 /app
-
-
-CMD /wait && alembic upgrade head && python -m src.main
+CMD sleep 5 && alembic upgrade head && python -m src.main

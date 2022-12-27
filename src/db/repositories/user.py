@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy import select
 
 from src.db.models.user import User
 from src.db.repositories.base import BaseRepository
@@ -12,14 +12,15 @@ class UserRepository(BaseRepository[User]):
 
     async def get_user_by_name(self, username: str) -> User:
         query = select(self.model).where(self.model.username == username)
-        result: User = (await self.session.execute(query)).scalar_one_or_none()
+        result = (await self.session.execute(query)).scalar_one_or_none()
 
         return result
 
-    async def create_user(self, username: str, password_hash: str) -> User:
+    async def create_user(self, username: str, password_hash: str, user_path: str) -> User:
         user = User(
             username=username,
             password_hash=password_hash,
+            user_path=user_path
         )
 
         await self.save(user)

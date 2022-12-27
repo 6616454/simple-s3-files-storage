@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from starlette import status
 
 from src.db.repositories.holder import HolderRepository
-from src.schemas.user import UserDTO, Token, CreateUser
+from src.schemas.user import UserSchema, Token, CreateUser
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl='/auth/sign-in')
 
@@ -39,7 +39,7 @@ class UserService:
         self.jwt_secret = jwt_secret
         self.jwt_algorithm = jwt_algorithm
 
-    async def create_token(self, user: UserDTO) -> Token:
+    async def create_token(self, user: UserSchema) -> Token:
 
         now = datetime.datetime.utcnow()
 
@@ -58,7 +58,7 @@ class UserService:
 
         return Token(access_token=token)
 
-    async def validate_token(self, token: str) -> UserDTO:
+    async def validate_token(self, token: str) -> UserSchema:
         try:
             payload = jwt.decode(
                 token,
@@ -71,7 +71,7 @@ class UserService:
 
         user_data = payload.get('user')
 
-        user = UserDTO.parse_obj(user_data)
+        user = UserSchema.parse_obj(user_data)
 
         return user
 
@@ -82,7 +82,9 @@ class UserService:
             try:
                 user = await uow.user_repo.create_user(
                     username=user_data.username,
-                    password_hash=await self.hash_password(user_data.password)
+                    password_hash=await self.hash_password(user_data.password),
+                    user_path=...
+
                 )
 
                 logger.info('Create new User %s', user_data.username)
@@ -110,5 +112,5 @@ class UserService:
         logger.info('Valid authentication user - %s', username)
         return await self.create_token(user.to_user_schema())
 
-    async def get_current_user(self, token: str = Depends(oauth_scheme)) -> UserDTO:
+    async def get_current_user(self, token: str = Depends(oauth_scheme)) -> UserSchema:
         return await self.validate_token(token)

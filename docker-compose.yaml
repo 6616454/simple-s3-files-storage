@@ -9,6 +9,16 @@ services:
     ports:
       - "5432:5432"
 
+  cache:
+    image: redis:6.2
+    restart: always
+    env_file:
+      - ./.env
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
   backend:
     build: .
     container_name: fastapi-app
@@ -17,5 +27,7 @@ services:
       - ./.env
     depends_on:
       - db
-    environment:
-      WAIT_HOSTS: localhost:5432
+      - cache
+
+volumes:
+  redis_data:

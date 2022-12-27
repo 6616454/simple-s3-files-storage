@@ -10,8 +10,9 @@ class CreateUser(BaseUser):
     password_correct: str
 
 
-class UserDTO(BaseUser):
+class UserSchema(BaseUser):
     id: int
+    user_path: str
 
     class Config:
         orm_mode = True

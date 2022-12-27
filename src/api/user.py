@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from src.db.repositories.holder import HolderRepository
 from src.di.db import uow_provider
 from src.di.user import get_user_service, provide_current_user
-from src.schemas.user import Token, CreateUser, UserDTO
+from src.schemas.user import Token, CreateUser, UserSchema
 from src.services.user import UserService
 
 router = APIRouter(
@@ -35,6 +35,6 @@ async def sign_in(
     )
 
 
-@router.get('/user', response_model=UserDTO)
-async def get_user(user: UserDTO = Depends(provide_current_user)):
+@router.get('/user', response_model=UserSchema)
+async def get_user(user: UserSchema = Depends(provide_current_user)):
     return user
