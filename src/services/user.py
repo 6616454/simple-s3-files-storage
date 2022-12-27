@@ -1,5 +1,6 @@
 import datetime
 import logging
+import shortuuid
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -83,7 +84,7 @@ class UserService:
                 user = await uow.user_repo.create_user(
                     username=user_data.username,
                     password_hash=await self.hash_password(user_data.password),
-                    user_path=...
+                    user_path=str(shortuuid.uuid())
 
                 )
 

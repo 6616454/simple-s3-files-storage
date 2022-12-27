@@ -5,9 +5,9 @@ from redis.asyncio import Redis
 
 from src.core.config import Settings
 from src.di.db import DbProvider, uow_provider
-from src.di.url import provide_url_service
 from src.di.user import get_user_service, provide_current_user
-from src.services.url import UrlService
+from src.di.file import provide_file_service
+from src.services.file import FileService
 from src.services.user import UserService
 
 
@@ -19,9 +19,9 @@ def setup_dependency_injection(app: FastAPI, pool: sessionmaker, redis: Redis, s
         settings.jwt_algorithm
     )
 
-    url_service = UrlService()
+    file_service = FileService()
 
     app.dependency_overrides[uow_provider] = db_provider.provide_session
     app.dependency_overrides[get_user_service] = lambda: user_service
     app.dependency_overrides[provide_current_user] = user_service.get_current_user
-    app.dependency_overrides[provide_url_service] = lambda: url_service
+    app.dependency_overrides[provide_file_service] = lambda: file_service
