@@ -29,3 +29,12 @@ async def uploading_files(
         files=files,
         uow=uow
     )
+
+
+@router.get('/', response_model=list[OutputFile])
+async def get_my_files(
+        user: UserSchema = Depends(provide_current_user),
+        file_service: FileService = Depends(provide_file_service),
+        uow: HolderRepository = Depends(uow_provider)
+):
+    return await file_service.get_user_files(user.id, uow)

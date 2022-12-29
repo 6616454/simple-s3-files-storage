@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class OutputFile(BaseModel):
     id: int
-    filename: str
+    file_name: str
     file_path: str
 
     class Config:

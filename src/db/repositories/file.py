@@ -1,5 +1,4 @@
-from typing import Optional
-
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.file import File
@@ -11,7 +10,7 @@ class FileRepository(BaseRepository[File]):
     def __init__(self, session: AsyncSession):
         super().__init__(File, session)
 
-    async def create_file(self, file_path: str, file_name: str, user_id: int):
+    async def create_file(self, file_path: str, file_name: str, user_id: int) -> None:
         file_obj = self.model(
             file_name=file_name,
             file_path=file_path,
@@ -19,5 +18,9 @@ class FileRepository(BaseRepository[File]):
         )
 
         await self.save(file_obj)
-        await self.session.flush()
         await self.commit()
+
+    async def get_files_by_user(self, user_id: int) -> list[File]:
+        query = select(self.model).where(self.model.user_id == user_id)
+        result = (await self.session.execute(query)).scalars().all()
+        return result
