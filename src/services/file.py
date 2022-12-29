@@ -42,5 +42,5 @@ class FileService:
 
     @staticmethod
     async def get_user_files(user_id: int, uow: HolderRepository) -> list[File]:
-        result = await uow.file_repo.get_files_by_user(user_id)
+        result = await uow.file_repo.get_files_by_user_id(user_id)
         return result

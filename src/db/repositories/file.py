@@ -20,7 +20,7 @@ class FileRepository(BaseRepository[File]):
         await self.save(file_obj)
         await self.commit()
 
-    async def get_files_by_user(self, user_id: int) -> list[File]:
+    async def get_files_by_user_id(self, user_id: int) -> list[File]:
         query = select(self.model).where(self.model.user_id == user_id)
         result = (await self.session.execute(query)).scalars().all()
         return result
