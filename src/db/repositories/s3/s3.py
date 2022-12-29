@@ -28,4 +28,4 @@ class S3Repository:
                 aws_secret_access_key=self.password,
                 config=AioConfig(signature_version='s3v4')
         ) as s3:
-            ...
+            await s3.create_bucket(Bucket=user_path)

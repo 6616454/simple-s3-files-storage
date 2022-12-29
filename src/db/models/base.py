@@ -1,7 +1,6 @@
 import logging
 
 import aioboto3
-from aiobotocore.config import AioConfig
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 from redis.asyncio import Redis

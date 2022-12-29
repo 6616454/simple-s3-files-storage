@@ -1,4 +1,4 @@
-from sqlalchemy import Column, BigInteger, String
+from sqlalchemy import Column, BigInteger, String, Text
 from sqlalchemy.orm import relationship
 
 from src.db.models.base import Base
@@ -10,13 +10,14 @@ class User(Base):
 
     id = Column(BigInteger, primary_key=True)
     username = Column(String(32), unique=True, nullable=False)
-    password_hash = Column(String, nullable=False)
-    user_path = Column(String(32), nullable=False)
+    password_hash = Column(Text, nullable=False)
+    user_path = Column(Text, nullable=False)
 
     files = relationship('File')
 
     def to_user_schema(self) -> UserSchema:
         return UserSchema(
             id=self.id,
-            username=self.username
+            username=self.username,
+            user_path=self.user_path
         )

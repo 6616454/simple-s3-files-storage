@@ -1,5 +1,7 @@
 import datetime
 import logging
+import uuid
+
 import shortuuid
 
 from fastapi import Depends, HTTPException
@@ -80,15 +82,19 @@ class UserService:
 
         if user_data.password == user_data.password_correct:
 
+            _uuid = str(uuid.uuid4())
+
             try:
                 user = await uow.user_repo.create_user(
                     username=user_data.username,
                     password_hash=await self.hash_password(user_data.password),
-                    user_path=str(shortuuid.uuid())
+                    user_path=_uuid
 
                 )
 
                 logger.info('Create new User %s', user_data.username)
+
+                await uow.s3_repo.create_bucket(_uuid)
 
                 return await self.create_token(user.to_user_schema())
             except IntegrityError:

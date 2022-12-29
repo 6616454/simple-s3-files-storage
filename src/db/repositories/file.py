@@ -19,4 +19,5 @@ class FileRepository(BaseRepository[File]):
         )
 
         await self.save(file_obj)
+        await self.session.flush()
         await self.commit()

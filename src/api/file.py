@@ -24,6 +24,7 @@ async def uploading_files(
 ):
     await file_service.upload_files(
         user_path=user.user_path,
+        user_id=user.id,
         dir=dir,
         files=files,
         uow=uow
