@@ -19,6 +19,9 @@ class FileRepository(BaseRepository[File]):
 
         await self.save(file_obj)
         await self.commit()
+        await self.refresh(file_obj)
+
+        return file_obj
 
     async def get_files_by_user_id(self, user_id: int) -> list[File]:
         query = select(self.model).where(self.model.user_id == user_id)

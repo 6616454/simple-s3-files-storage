@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile, File, Query
 
 from src.db.repositories.holder import HolderRepository
 from src.di import provide_current_user, provide_file_service, uow_provider
@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.post('/upload')
+@router.post('/upload', response_model=list[OutputFile])
 async def uploading_files(
         dir: Optional[str] = None,
         user: UserSchema = Depends(provide_current_user),
@@ -22,7 +22,7 @@ async def uploading_files(
         file_service: FileService = Depends(provide_file_service),
         uow: HolderRepository = Depends(uow_provider)
 ):
-    await file_service.upload_files(
+    return await file_service.upload_files(
         user_path=user.user_path,
         user_id=user.id,
         dir=dir,
@@ -31,7 +31,7 @@ async def uploading_files(
     )
 
 
-@router.get('/', response_model=list[OutputFile])
+@router.get('/list', response_model=list[OutputFile])
 async def get_my_files(
         user: UserSchema = Depends(provide_current_user),
         file_service: FileService = Depends(provide_file_service),

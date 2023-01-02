@@ -30,6 +30,7 @@ def upgrade() -> None:
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('file_name', sa.String(length=64), nullable=False),
     sa.Column('file_path', sa.Text(), nullable=False),
+    sa.Column('downloadable', sa.Boolean, default=False),
     sa.Column('user_id', sa.BigInteger(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

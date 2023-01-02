@@ -7,7 +7,7 @@ import shortuuid
 
 class CustomTestUser:
     def __init__(self) -> None:
-        self.token: str = ""
+        self.token: str = ''
 
     def set_token(self, token: str) -> None:
         self.token = token
@@ -48,11 +48,3 @@ class TestMain:
         })
 
         assert response.json()['detail'] == 'Credentials not valid'
-
-    def test_create_url(self):
-        response = self.client.post('/url', json={
-            'original_url': 'original_url_test'
-        }, headers={'Authorization': f'Bearer {user.token}'})
-
-        assert response.status_code == 200
-        assert 'short_url' in response.json()

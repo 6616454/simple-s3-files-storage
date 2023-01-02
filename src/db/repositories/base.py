@@ -1,5 +1,6 @@
 from typing import TypeVar, Type, Generic
 
+from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -23,6 +24,12 @@ class BaseRepository(Generic[Model]):
     async def get_all(self) -> list[Model]:
         result = await self.session.execute(select(self.model))
         return result.scalars().all()
+
+    async def update_obj(self, id_: int, **kwargs) -> None:
+        query = update(self.model).where(self.model.id == id_).values(
+            kwargs)
+        await self.session.execute(query)
+        await self.commit()
 
     async def commit(self) -> None:
         await self.session.commit()
