@@ -2,8 +2,6 @@ import datetime
 import logging
 import uuid
 
-import shortuuid
-
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 
