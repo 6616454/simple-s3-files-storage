@@ -1,5 +1,6 @@
-FROM python:3.10.6
+FROM python:3.10.6 as python_base
 
+FROM python_base as production
 
 WORKDIR /app
 
@@ -14,5 +15,6 @@ RUN poetry install
 
 COPY . /app
 
+EXPOSE 8000
 
-CMD sleep 5 && alembic upgrade head && python -m src.main
+CMD alembic upgrade head && uvicorn src.main:build_app --host 0.0.0.0
