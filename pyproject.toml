@@ -27,6 +27,7 @@ sqlalchemy = "^1.4.45"
 cloudinary = "^1.30.0"
 aioboto3 = "^10.2.0"
 aiofiles = "^22.1.0"
+aiozipstream = "^0.4"
 
 [build-system]
 requires = ["poetry-core"]

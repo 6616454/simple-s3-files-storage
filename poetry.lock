@@ -80,6 +80,14 @@ python-versions = ">=3.7"
 frozenlist = ">=1.1.0"
 
 [[package]]
+name = "aiozipstream"
+version = "0.4"
+description = "Creating zip files on the fly"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "alembic"
 version = "1.9.1"
 description = "A database migration tool for SQLAlchemy."
@@ -734,7 +742,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "20858ca7784999e358d0144700d565f90cbb5c4df889b7589fc8864c17cd5dbb"
+content-hash = "bcf7dc64d4f16f94b1963ef1abfdab2829a3cf4773a4d84fb48c63ada6e082ba"
 
 [metadata.files]
 aioboto3 = [
@@ -845,6 +853,10 @@ aioitertools = [
 aiosignal = [
     {file = "aiosignal-1.3.1-py3-none-any.whl", hash = "sha256:f8376fb07dd1e86a584e4fcdec80b36b7f81aac666ebc724e2c090300dd83b17"},
     {file = "aiosignal-1.3.1.tar.gz", hash = "sha256:54cd96e15e1649b75d6c87526a6ff0b6c1b0dd3459f43d9ca11d48c339b68cfc"},
+]
+aiozipstream = [
+    {file = "aiozipstream-0.4-py2.py3-none-any.whl", hash = "sha256:a58bad8c75aba319c07bd3d817da7caec7417c1eb4f4c692e00b173fb9ded9c6"},
+    {file = "aiozipstream-0.4.tar.gz", hash = "sha256:ccc5cec35c2580b8a13185c916b1581bfcb4278ddf6ea3f7f834b6c9c47d6c61"},
 ]
 alembic = [
     {file = "alembic-1.9.1-py3-none-any.whl", hash = "sha256:a9781ed0979a20341c2cbb56bd22bd8db4fc1913f955e705444bd3a97c59fa32"},
