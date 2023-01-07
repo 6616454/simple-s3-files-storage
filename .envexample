@@ -1,6 +1,6 @@
 DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
 JWT_SECRET=aasjkldfasdlkfjsalkdfjaskldfjasldfk
-REDIS_HOST=localhost
+REDIS_HOST=cache
 POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
