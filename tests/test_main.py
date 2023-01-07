@@ -22,7 +22,7 @@ class TestMain:
         self.client = TestClient(build_app())
 
     def test_without_authentication(self):
-        response = self.client.get('/url/user/status')
+        response = self.client.get('/file/list')
 
         assert response.status_code == 401
 
@@ -48,3 +48,10 @@ class TestMain:
         })
 
         assert response.json()['detail'] == 'Credentials not valid'
+
+    def test_with_authentication(self):
+        response = self.client.get('file/list', headers={
+            'Authorization': f'Bearer {user.token}'
+        })
+
+        assert response.json() == []
