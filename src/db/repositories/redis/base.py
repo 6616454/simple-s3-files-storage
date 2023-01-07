@@ -20,3 +20,7 @@ class RedisRepository:
     async def get(self, name: str) -> str:
         result = await self.redis.get(name)
         return result
+
+    async def delete(self, name: str) -> None:
+        logger.info('Redis del - %s', name)
+        await self.redis.delete(name)
