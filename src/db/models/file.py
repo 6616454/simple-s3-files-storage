@@ -2,6 +2,7 @@ from sqlalchemy import Column, BigInteger, Text, ForeignKey, String, Boolean
 from sqlalchemy.orm import relationship
 
 from src.db.models.base import Base
+from src.schemas.file import OutputFile
 
 
 class File(Base):
@@ -14,4 +15,12 @@ class File(Base):
     user_id = Column(BigInteger, ForeignKey('users.id'))
 
     user = relationship('User', back_populates='files')
+
+    def to_file_schema(self):
+        return OutputFile(
+            id=self.id,
+            file_name=self.file_name,
+            file_path=self.file_path,
+            downloadable=self.downloadable
+        )
 

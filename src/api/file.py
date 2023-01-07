@@ -49,4 +49,4 @@ async def download_files(
         file_service: FileService = Depends(provide_file_service),
         uow: HolderRepository = Depends(uow_provider)
 ):
-    return await file_service.download_files(dir, file_id, user.user_path, compr_type, uow)
+    return await file_service.download_files(dir, file_id, user.id, user.user_path, compr_type, uow)

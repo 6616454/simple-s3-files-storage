@@ -1,4 +1,6 @@
-from sqlalchemy import select
+from typing import Optional
+
+from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.file import File
@@ -26,4 +28,9 @@ class FileRepository(BaseRepository[File]):
     async def get_files_by_user_id(self, user_id: int) -> list[File]:
         query = select(self.model).where(self.model.user_id == user_id)
         result = (await self.session.execute(query)).scalars().all()
+        return result
+
+    async def get_file_by_user_and_id(self, file_id: int, user_id: int) -> File:
+        query = select(self.model).where(and_(self.model.user_id == user_id, self.model.id == file_id))
+        result = (await self.session.execute(query)).scalar_one_or_none()
         return result
