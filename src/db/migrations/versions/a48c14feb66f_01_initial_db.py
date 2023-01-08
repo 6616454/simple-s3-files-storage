@@ -24,7 +24,8 @@ def upgrade() -> None:
     sa.Column('password_hash', sa.Text(), nullable=False),
     sa.Column('user_path', sa.Text(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('username')
+    sa.UniqueConstraint('username'),
+    sa.UniqueConstraint('user_path')
     )
     op.create_table('files',
     sa.Column('id', sa.BigInteger(), nullable=False),
@@ -32,8 +33,9 @@ def upgrade() -> None:
     sa.Column('file_path', sa.Text(), nullable=False),
     sa.Column('downloadable', sa.Boolean, default=False),
     sa.Column('user_id', sa.BigInteger(), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('file_path')
     )
     # ### end Alembic commands ###
 
