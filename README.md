@@ -7,7 +7,7 @@
 
 2. Поднять локально Docker-контейнеры
 <!-- TOC -->
-    docker-compose up
+    make up
 3. Войти в контейнер с приложением и запустить тесты
 <!-- TOC -->
     docker exec -it fastapi-app sh
