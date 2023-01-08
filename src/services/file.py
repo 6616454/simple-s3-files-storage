@@ -1,8 +1,9 @@
 import json
 import shutil
 from asyncio import create_task
-from typing import Optional, Union
+from typing import Optional
 import aiofiles
+import os as sync_os
 from aiofiles import os
 from fastapi import UploadFile, HTTPException
 from fastapi.responses import FileResponse
@@ -13,14 +14,17 @@ from src.db.repositories.holder import HolderRepository
 
 
 class FileService:
-    file_path: Optional[str]
+    _file_path: Optional[str]
+    _bytes_for_read: int = 1048576  # 1 mb
+    _max_bytes: int = 1048576000  # 1 GB
 
     @staticmethod
     async def _compr_type(file_name: str, _type: Optional[str] = None):
         if _type:
             shutil.make_archive(file_name, _type, file_name)
             await os.remove(file_name)
-            return f'{file_name}.{_type}'
+            return f'{file_name}.{_type}'  # здесь собирается не путь файла, а название,
+            # os.path.join не подойдет
 
         return file_name
 
@@ -39,76 +43,101 @@ class FileService:
             return json.loads(cache)
 
         result = await uow.file_repo.get_files_by_user_id(user_id)
-        await uow.redis_repo.set(user_id, json.dumps([file.to_file_schema().dict() for file in result]))
+        await uow.redis_repo.set(user_id, json.dumps(
+            [file.to_file_schema().dict() for file in result]))
 
         return result
 
-    @staticmethod
     async def _create_file(
-            user_path: str,
-            user_id: int,
-            file_path: str,
-            file: UploadFile,
-            file_id: int,
-            uow: HolderRepository
+        self,
+        user_path: str,
+        user_id: int,
+        file_path: str,
+        file: UploadFile,
+        file_obj: File,
+        uow: HolderRepository
     ) -> None:
+        _bytes = 0
+
         async with aiofiles.open(file.filename, 'wb') as buffer:
-            data = await file.read()
+            data = await file.read(size=self._bytes_for_read)
             await buffer.write(data)
+            _bytes += self._bytes_for_read
+            await file.seek(offset=_bytes)
+
+            while data:
+                try:
+                    data = await file.read(size=self._bytes_for_read)
+                    await buffer.write(data)
+                    _bytes += self._bytes_for_read
+                    await file.seek(offset=_bytes)
+                except ValueError:
+                    break
+                if _bytes > self._max_bytes:
+                    await uow.file_repo.delete(file_obj)
+                    await os.remove(file.filename)
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail='The file exceeds 1 GB.'
+                    )
+
+                await buffer.write(data)
 
         await uow.s3_repo.upload_file(user_path, file_path, buffer.name)
-        await uow.file_repo.update_obj(file_id, downloadable=True)
+        await uow.file_repo.update_obj(file_obj.id, downloadable=True)
         await uow.redis_repo.delete(user_id)
 
         await os.remove(file.filename)
 
-    async def _download_dir(self, user_path: str, dir: str, uow: HolderRepository) -> FileResponse:
+    async def _download_dir(self, user_path: str, dir: str,
+                            uow: HolderRepository) -> FileResponse:
         await uow.s3_repo.get_bucket_by_dir(user_path, dir)
 
         try:
             shutil.make_archive(dir, 'zip', dir)
             shutil.rmtree(dir)
         except FileNotFoundError:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Directory not found')
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail='Directory not found')
 
         return await self._file_response(f'{dir}.zip', dir)
 
     async def upload_files(
-            self,
-            user_path: str,
-            user_id: int,
-            dir: str,
-            files: list[UploadFile],
-            uow: HolderRepository
+        self,
+        user_path: str,
+        user_id: int,
+        dir: str,
+        files: list[UploadFile],
+        uow: HolderRepository
     ) -> list[File]:
 
         new_files = []
 
         if dir is None:
-            self.file_path = ''
+            self._file_path = ''
         else:
-            self.file_path = f'{dir}/'
+            self._file_path = f'{dir}/'
 
         for file in files:
-            file_path = self.file_path + file.filename
+            file_path = sync_os.path.join(self._file_path + file.filename)
 
             new_file = await uow.file_repo.create_file(file_path, file.filename, user_id)
             new_files.append(new_file)
 
-            create_task(self._create_file(user_path, user_id, file_path, file, new_file.id, uow))
+            create_task(self._create_file(user_path, user_id, file_path, file, new_file, uow))
 
         await uow.redis_repo.delete(user_id)
 
         return new_files
 
     async def download_files(
-            self,
-            dir: Optional[str],
-            file_id: Optional[int],
-            user_id: int,
-            user_path: str,
-            compr_type: Optional[str],
-            uow: HolderRepository
+        self,
+        dir: Optional[str],
+        file_id: Optional[int],
+        user_id: int,
+        user_path: str,
+        compr_type: Optional[str],
+        uow: HolderRepository
     ) -> FileResponse:
 
         if dir:

@@ -10,9 +10,9 @@ class File(Base):
 
     id = Column(BigInteger, primary_key=True)
     file_name = Column(String(64), nullable=False)
-    file_path = Column(Text, nullable=False)
+    file_path = Column(Text, nullable=False, unique=True)
     downloadable = Column(Boolean, default=False)
-    user_id = Column(BigInteger, ForeignKey('users.id'))
+    user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'))
 
     user = relationship('User', back_populates='files')
 
