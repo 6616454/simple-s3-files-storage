@@ -1,20 +1,18 @@
-FROM python:3.10.6 as python_base
-
-FROM python_base as production
+FROM python:3.10.6 as production
 
 WORKDIR /app
 
-COPY pyproject.toml ./
-COPY poetry.lock ./
+COPY poetry.lock pyproject.toml ./
 
 RUN python -m pip install --upgrade pip
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install
+
+RUN pip install poetry \
+    && poetry config virtualenvs.create false \
+    && poetry install --no-dev
 
 
 COPY . /app
 
 EXPOSE 8000
 
-CMD alembic upgrade head && uvicorn src.main:build_app --host 0.0.0.0
+CMD sleep 10 && alembic upgrade head && python -m src.main
