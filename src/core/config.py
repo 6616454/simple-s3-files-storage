@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
     jwt_secret: str
     jwt_algorithm: str = 'HS256'
-    jwt_expiration: int = 3600  # Жизнь токена - час
+    jwt_expiration: int = 60 * 60
 
     class Config:
         env_file = '.env'
