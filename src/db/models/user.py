@@ -11,7 +11,7 @@ class User(Base):
     id = Column(BigInteger, primary_key=True)
     username = Column(String(32), unique=True, nullable=False)
     password_hash = Column(Text, nullable=False)
-    user_path = Column(Text, nullable=False)
+    user_path = Column(Text, nullable=False, unique=True)
 
     files = relationship('File')
 
