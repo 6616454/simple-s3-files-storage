@@ -39,4 +39,5 @@ if __name__ == '__main__':
         'src.main:build_app',
         factory=True,
         reload=True,
+        host='0.0.0.0'
     )
