@@ -17,9 +17,7 @@ class BaseRepository(Generic[Model]):
 
     async def get_by_id(self, id_: int):
         query = select(self.model).where(self.model.id == id_)
-        result = (await self.session.execute(query)).scalar_one_or_none()
-
-        return result
+        return (await self.session.execute(query)).scalar_one_or_none()
 
     async def get_all(self) -> list[Model]:
         result = await self.session.execute(select(self.model))
