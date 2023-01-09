@@ -163,7 +163,7 @@ class FileService:
     ) -> FileResponse:
 
         if dir:
-            return await self._download_dir(user_path, dir, uow)
+            return await self._download_dir(user_path, dir, s3_repo)
 
         file: File = await file_repo.get_file_by_user_and_id(file_id, user_id)
 
