@@ -21,16 +21,16 @@ weighing less than 1 GB.
 <!-- TOC -->
     cp .envexample .env
 
-2. Поднять локально Docker-контейнеры
+2. Run the "make up" command
 <!-- TOC -->
     make up
-3. Войти в контейнер с приложением и запустить тесты
+3. Wait for the application to launch and, if possible, run the tests
 <!-- TOC -->
     docker exec -it fastapi-app sh
     ...
-    pytest tests/test_main.py
+    pytest tests
 
-4. Приложение доступно по адресу
+4. The application is available at
 <!-- TOC -->
     0.0.0.0:8082/docs
 
