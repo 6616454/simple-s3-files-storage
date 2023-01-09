@@ -16,15 +16,17 @@ weighing less than 1 GB.
 * PyTest (Framework for tests);
 
 ### Project Deployment
-
-1. Copy .env file
+1.Clone repository
+<!-- TOC -->
+    git clone https://github.com/6616454/simple-s3-files-storage.git
+2.Copy .env file
 <!-- TOC -->
     cp .envexample .env
 
-2. Run the "make up" command
+3.Run the "make up" command
 <!-- TOC -->
     make up
-3. Wait for the application to launch and, if possible, run the tests
+4.Wait for the application to launch and, if possible, run the tests
 <!-- TOC -->
     docker exec -it fastapi-app sh
     ...
