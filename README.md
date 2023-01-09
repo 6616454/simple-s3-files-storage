@@ -12,6 +12,7 @@ weighing less than 1 GB.
 * SQLAlchemy (ORM Python);
 * Alembic (Database migrations);
 * MinIO (S3 Storage);
+* Aioboto3 (async library for interacting with s3 using python)
 * Poetry (Packaging and dependency management);
 * PyTest (Framework for tests);
 
