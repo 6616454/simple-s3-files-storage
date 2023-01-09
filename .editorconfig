@@ -2,4 +2,4 @@ root = true
 
 [*.py]
 indent_size = 4
-max_line_length = 95
+max_line_length = 110

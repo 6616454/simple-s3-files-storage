@@ -1,5 +1,5 @@
 up:
-	docker compose -f docker-compose.yaml up -d
+	docker compose -f deploy/docker-compose.yaml up --build
 
 down:
-	docker compose -f docker-compose.yaml down -v && docker network prune --force
+	docker compose -f deploy/docker-compose.yaml down -v && docker network prune --force
