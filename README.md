@@ -22,7 +22,7 @@ weighing less than 1 GB.
     git clone https://github.com/6616454/simple-s3-files-storage.git
 2.Copy .env file
 <!-- TOC -->
-    cp .envexample .env
+    cp deploy/.envexample deploy/.env
 
 3.Run the "make up" command
 <!-- TOC -->
