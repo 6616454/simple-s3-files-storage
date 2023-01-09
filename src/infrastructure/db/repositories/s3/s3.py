@@ -5,10 +5,6 @@ from aioboto3 import Session
 from aiobotocore.config import AioConfig
 
 
-# Не получилось избежать повторного использования контекстного менеджера,
-# вынес получение сессии в отдельный метод, но почему-то стало выдавать ошибку о потере
-# подключения к s3 сервису.
-
 class S3Repository:
     def __init__(self, session: Session, s3_host: str, user: str, password: str):
         self.session = session
