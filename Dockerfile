@@ -15,4 +15,4 @@ COPY . /app
 
 EXPOSE 8000
 
-CMD sleep 10 && alembic -c ./deploy/alembic.ini upgrade head && python -m src.main
+CMD sleep 10 && alembic -c ./deploy/alembic.ini upgrade head && python -m src.api.main
