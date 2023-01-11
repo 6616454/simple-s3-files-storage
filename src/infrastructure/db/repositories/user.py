@@ -24,7 +24,6 @@ class UserRepository(BaseRepository[User]):
         )
 
         await self.save(user)
-        await self.session.commit()
         await self.refresh(user)
 
         return user

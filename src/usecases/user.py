@@ -98,6 +98,8 @@ class UserService:
 
                 )
 
+                await user_repo.commit()
+
                 logger.info('Create new User %s', user_data.username)
 
                 await s3_repo.create_bucket(_uuid)
@@ -105,11 +107,11 @@ class UserService:
                 return await self.create_token(user.to_user_schema())
             except IntegrityError:
                 logger.warning('Invalid registration')
-                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                     detail='Username is already in use')
 
         logger.warning('Invalid registration')
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Credentials not valid')
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Credentials not valid')
 
     async def authenticate_user(self, username: str, password: str,
                                 user_repo: UserRepository) -> Token:
@@ -118,12 +120,12 @@ class UserService:
 
         if not user:
             logger.warning('Invalid authentication for username %s', username)
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail='Username or password not valid')
 
         if not await self.verify_password(password, user.password_hash):
             logger.warning('Invalid authentication for user %s', username)
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail='Username or password not valid')
 
         logger.info('Valid authentication user - %s', username)
