@@ -1,6 +1,6 @@
 from starlette.testclient import TestClient
 
-from src.main import build_app
+from src.api.main import build_app
 
 import shortuuid
 
