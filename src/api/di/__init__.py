@@ -7,8 +7,8 @@ from src.core.config import Settings
 from src.api.di.db import DbProvider, uow_provider
 from src.api.di.user import get_user_service, provide_current_user
 from src.api.di.file import provide_file_service
-from src.usecases.file import FileService
-from src.usecases.user import UserService
+from src.services.file import FileService
+from src.services.user import UserService
 
 
 def setup_dependency_injection(app: FastAPI, pool: sessionmaker, redis: Redis, s3_session: Session, settings: Settings):

@@ -8,7 +8,7 @@ from src.infrastructure.db.repositories.holder import HolderRepository
 from src.api.di import provide_current_user, provide_file_service, uow_provider
 from src.api.handlers.responses.file import OutputFile
 from src.api.handlers.responses.user import UserSchema
-from src.usecases.file import FileService
+from src.services.file import FileService
 
 router = APIRouter(
     prefix='/file',

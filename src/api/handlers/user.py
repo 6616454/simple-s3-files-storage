@@ -6,7 +6,7 @@ from src.infrastructure.db.repositories.holder import HolderRepository
 from src.api.di.db import uow_provider
 from src.api.di.user import get_user_service, provide_current_user
 from src.api.handlers.responses.user import Token, UserSchema
-from src.usecases.user import UserService
+from src.services.user import UserService
 
 router = APIRouter(
     prefix='/auth',
