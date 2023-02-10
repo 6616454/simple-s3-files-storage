@@ -1,7 +1,5 @@
 ## API Simple Storage Files
-The API that I created as part of a training project implements 
-storage for files
-weighing less than 1 GB.
+API, which is being developed as part of a test task.
 
 ### Used technologies
 * Python;
@@ -15,25 +13,21 @@ weighing less than 1 GB.
 * Aioboto3 (async library for interacting with s3 using python)
 * Poetry (Packaging and dependency management);
 * PyTest (Framework for tests);
+* JWT (Auth);
 
 ### Project Deployment
 1.Clone repository
 <!-- TOC -->
-    git clone https://github.com/6616454/simple-s3-files-storage.git
+    git clone https://github.com/6616454/test-task-the-restaurant-menu.git
 2.Copy .env file
 <!-- TOC -->
-    cp deploy/.envexample deploy/.env
+    cp .envexample .env
 
 3.Run the "make up" command
 <!-- TOC -->
     make up
-4.Wait for the application to launch and, if possible, run the tests
-<!-- TOC -->
-    docker exec -it fastapi-app sh
-    ...
-    pytest tests
 
 4. The application is available at
 <!-- TOC -->
-    0.0.0.0:8082/docs
+    127.0.0.1:8000/docs
 
